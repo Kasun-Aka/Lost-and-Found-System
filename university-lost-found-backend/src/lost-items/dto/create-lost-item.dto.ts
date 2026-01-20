@@ -1,13 +1,18 @@
-import { IsString, IsNotEmpty, IsOptional, IsISO8601 } from 'class-validator';
+import {
+  IsString,
+  IsNotEmpty,
+  IsOptional,
+  IsDateString,
+} from 'class-validator';
 
 export class CreateLostItemDto {
-    @IsString()
+  @IsString()
   @IsNotEmpty()
-  ownerName: string;
+  studentName: string;
 
   @IsString()
   @IsNotEmpty()
-  ownerStudentId: string;
+  studentId: string;
 
   @IsString()
   @IsNotEmpty()
@@ -15,16 +20,16 @@ export class CreateLostItemDto {
 
   @IsString()
   @IsNotEmpty()
-  category: string;
+  itemCategory: string;
 
   @IsString()
   @IsNotEmpty()
-  locationDescription: string;
+  location: string;
 
-  @IsISO8601()
-  lostAt: string;
+  @IsDateString()
+  lostDatetime: string;
 
   @IsOptional()
   @IsString()
-  description?: string;
+  details?: string;
 }
