@@ -48,6 +48,8 @@ export class LostItemsService {
         location_description,
         lost_at,
         description,
+        owner_name,
+        owner_student_id,
         status
       `)
       .order('lost_at', { ascending: false });
@@ -70,6 +72,8 @@ export class LostItemsService {
           location_description,
           lost_at,
           description,
+          owner_name,
+          owner_student_id,
           status
         `)
         .eq('id', id)
