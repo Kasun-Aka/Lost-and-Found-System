@@ -12,6 +12,8 @@ The system follows a full-stack architecture with a REST API backend and a moder
 ## Current Features
 - Report a lost item
 - View all reported lost items
+- View detailed lost items
+- Reporting a found item
 - RESTful API structure
 - Database integration with Supabase
 

@@ -85,4 +85,19 @@ export class LostItemsService {
     
       return data;
     }
+
+    async updateLostItemStatus(id: string, body: any) {
+      const { data, error } = await this.supabase
+        .from('lost_items')
+        .update({ status: body.status })          
+        .eq('id', id)
+        .select('id, status')
+        .single();
+
+      if (error) {
+        throw new InternalServerErrorException(error.message);
+      }
+    
+      return data;
+    }
 }

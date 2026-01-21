@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
+import FoundItemsPage from '@/app/found-items/[id]/page';
+import Link from 'next/dist/client/link';
 
 type LostItem = {
   id: string;
@@ -12,6 +14,7 @@ type LostItem = {
   location_description: string;
   lost_at: string;
   description: string;
+  status: 'LOST' | 'FOUND';
 };
 
 export default function LostItemDetails() {
@@ -58,12 +61,14 @@ export default function LostItemDetails() {
       <h1 className="text-3xl font-bold text-[#1B0085] mb-2">
         {item.item_name}
       </h1>
-      
 
-      {/* Category badge */}
-      <span className="inline-block mb-4 px-3 py-1 text-sm rounded-full bg-blue-100 text-blue-700">
-        {item.category}
-      </span>
+      {/* Status and Category */}
+      <div className="flex items-center gap-2 mb-4">
+        <StatusBadge status={item.status} />
+        <span className="px-3 py-1 text-sm rounded-full bg-blue-100 text-blue-700">
+          {item.category}
+        </span>
+      </div>
 
       {/* Info grid */}
       <div className="space-y-3 text-gray-700">
@@ -106,10 +111,12 @@ export default function LostItemDetails() {
 
       {/* Footer action */}
       <div className="mt-6 text-right">
-        <button className="px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition">
-          I found this item
-        </button>
-      </div>
+          <Link href={`/found-items/${item.id}`}>
+            <button className="px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition">
+              I found this item
+            </button>
+          </Link>
+        </div>
     </div>
   </div>
 );
@@ -152,4 +159,16 @@ export default function LostItemDetails() {
       );
     }
 
+    function StatusBadge({ status }: { status: 'LOST' | 'FOUND' }) {
+    const styles =
+      status === 'LOST'
+        ? 'bg-red-100 text-red-700'
+        : 'bg-green-100 text-green-700';
+
+    return (
+      <span className={`text-xs px-2 py-1 rounded-full ${styles}`}>
+        {status}
+      </span>
+    );
+  }
 }

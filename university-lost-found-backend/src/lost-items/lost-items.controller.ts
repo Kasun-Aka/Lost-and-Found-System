@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Param, ParseIntPipe } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, Put } from '@nestjs/common';
 import { LostItemsService } from './lost-items.service';
 import { CreateLostItemDto } from './dto/create-lost-item.dto';
 
@@ -20,4 +20,10 @@ export class LostItemsController {
   findOne(@Param('id') id: string) {
     return this.lostItemsService.getLostItemById(id);
   }
+
+  @Put(':id')
+  update(@Param('id') id: string, @Body() body: any) {
+    return this.lostItemsService.updateLostItemStatus(id, body);
+  }
+
 }

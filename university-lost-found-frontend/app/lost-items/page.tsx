@@ -12,6 +12,7 @@ type LostItem = {
   location_description: string;
   lost_at: string;
   description: string;
+  status: 'LOST' | 'FOUND';
 };
 
 export default function LostItemsPage() {
@@ -76,9 +77,12 @@ export default function LostItemsPage() {
                     {item.item_name}
                   </h2>
 
-                  <span className="text-xs px-2 py-1 rounded-full bg-blue-100 text-blue-700">
-                    {item.category}
-                  </span>
+                  <div className="flex gap-2">
+                      <StatusBadge status={item.status} />
+                      <span className="text-xs px-2 py-1 rounded-full bg-blue-100 text-blue-700">
+                        {item.category}
+                      </span>
+                    </div>
                 </div>
 
                 {/* Meta info */}
@@ -106,10 +110,25 @@ export default function LostItemsPage() {
           <div className="h-5 w-40 bg-gray-200 rounded"></div>
           <div className="h-4 w-20 bg-gray-200 rounded-full"></div>
         </div>
-    
+
         <div className="h-4 w-60 bg-gray-200 rounded mb-2"></div>
         <div className="h-4 w-48 bg-gray-200 rounded"></div>
       </div>
     );
   }
+
+  function StatusBadge({ status }: { status: 'LOST' | 'FOUND' }) {
+    const styles =
+      status === 'LOST'
+        ? 'bg-red-100 text-red-700'
+        : 'bg-green-100 text-green-700';
+
+    return (
+      <span className={`text-xs px-2 py-1 rounded-full ${styles}`}>
+        {status}
+      </span>
+    );
+  }
+
+
 }
