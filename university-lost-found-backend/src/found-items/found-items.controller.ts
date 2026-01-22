@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Param } from '@nestjs/common';
+import { Body, Controller, Post, Param, Get } from '@nestjs/common';
 import { FoundItemsService } from './found-items.service';
 
 @Controller('found-items')
@@ -10,6 +10,15 @@ export class FoundItemsController {
       return this.foundItemsService.createFoundItem(id, body);
     }
 
+    @Get()
+    getAllFoundItems() {
+      return this.foundItemsService.getAllFoundItems();
+    }
+
+    @Get('/found/:id')
+    getFoundItemById(@Param('id') id: string) {
+        return this.foundItemsService.getFoundItemById(id);
+    }
 }
 
 

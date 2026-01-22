@@ -36,4 +36,49 @@ export class FoundItemsService {
         return inserted;
       }
     
+    async getAllFoundItems() {
+        const { data, error } = await this.supabase
+          .from('lost_items')
+          .select(`
+          id,
+          item_name,
+          category,
+          location_description,
+          lost_at,
+          description,
+          owner_name,
+          owner_student_id,
+          status
+        `)
+          .eq('status', 'FOUND')
+          .order('lost_at', { ascending: false });
+
+        if (error) {
+          throw new InternalServerErrorException(error.message);
+        }
+        return data;
+    }
+
+    async getFoundItemById(id: string) {
+        const { data, error } = await this.supabase
+          .from('found_items')
+          .select(`
+            owner_name,
+            owner_student_id,
+            item_name,
+            category,
+            pickup_location,
+            lost_item_id,
+            details,
+            founder_name,
+            founder_student_id
+          `) 
+          .eq('lost_item_id', id)
+          .single();
+        if (error || !data) {
+          throw new InternalServerErrorException('item not found');
+        }
+        return data;
+    }
+
 }
