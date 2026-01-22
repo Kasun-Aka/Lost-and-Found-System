@@ -2,32 +2,31 @@
 
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-import Link from 'next/dist/client/link';
 
-type LostItem = {
-  id: string;
+type FoundItem = {
   owner_name: string;
   owner_student_id: string;
   item_name: string;
   category: string;
-  location_description: string;
-  lost_at: string;
-  description: string;
-  status: 'LOST' | 'FOUND';
+  lost_item_id: string;
+  founder_name: string;
+  founder_student_id: string;
+  pickup_location: string;
+  details: string;
 };
 
-export default function LostItemDetails() {
+export default function FoundItemDetails() {
   const params = useParams();
   const id = params.id as string;
 
-  const [item, setItem] = useState<LostItem | null>(null);
+  const [item, setItem] = useState<FoundItem | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!id) return;
 
     async function fetchItem() {
-      const res = await fetch(`http://localhost:3001/lost-items/${id}`);
+      const res = await fetch(`http://localhost:3001/found-items/found/${id}`);
 
       if (!res.ok) {
         setLoading(false);
@@ -52,6 +51,8 @@ export default function LostItemDetails() {
       );
     }
 
+    const status = 'FOUND';
+
   return (
   <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
     <div className="w-full max-w-xl bg-white rounded-2xl shadow-md p-6">
@@ -63,7 +64,7 @@ export default function LostItemDetails() {
 
       {/* Status and Category */}
       <div className="flex items-center gap-2 mb-4">
-        <StatusBadge status={item.status} />
+        <StatusBadge status={status} />
         <span className="px-3 py-1 text-sm rounded-full bg-blue-100 text-blue-700">
           {item.category}
         </span>
@@ -72,19 +73,14 @@ export default function LostItemDetails() {
       {/* Info grid */}
       <div className="space-y-3 text-gray-700">
         <div className="flex justify-between">
-          <span className="font-medium text-[#501FAB]">📍 Location</span>
-          <span>{item.location_description}</span>
+          <span className="font-medium text-[#501FAB]">📍Pickup Location</span>
+          <span>{item.pickup_location}</span>
         </div>
 
         <div className="flex justify-between">
-          <span className="font-medium text-[#501FAB]">🕒 Lost at</span>
-          <span>{new Date(item.lost_at).toLocaleString()}</span>
-        </div>
-
-        <div className="flex justify-between">
-          <span className="font-medium text-[#501FAB]">👤 Reported by</span>
+          <span className="font-medium text-[#501FAB]">👤 Found by</span>
           <span>
-            {item.owner_name} ({item.owner_student_id})
+            {item.founder_name} ({item.founder_student_id})
           </span>
         </div>
       </div>
@@ -93,13 +89,13 @@ export default function LostItemDetails() {
       <hr className="my-5" />
 
       {/* Description */}
-      {item.description ? (
+      {item.details ? (
         <div>
           <h2 className="font-semibold text-gray-800 mb-1">
             Additional Details
           </h2>
           <p className="text-gray-600 leading-relaxed">
-            {item.description}
+            {item.details}
           </p>
         </div>
       ) : (
@@ -107,18 +103,10 @@ export default function LostItemDetails() {
           No additional details provided.
         </p>
       )}
-
-      {/* Footer action */}
-      <div className="mt-6 text-right">
-          <Link href={`/found-items/${item.id}`}>
-            <button className="px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition">
-              I found this item
-            </button>
-          </Link>
-        </div>
     </div>
-  </div>
-);
+    </div>  
+   );
+}
 
     interface Props {
         title?: string;
@@ -169,5 +157,5 @@ export default function LostItemDetails() {
         {status}
       </span>
     );
-  }
 }
+

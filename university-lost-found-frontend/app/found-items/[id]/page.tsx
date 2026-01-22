@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 
-export default function FoundItemsPage() {
+export default function FoundItemsDetailsPage() {
   const { id } = useParams();
   const router = useRouter();
 
