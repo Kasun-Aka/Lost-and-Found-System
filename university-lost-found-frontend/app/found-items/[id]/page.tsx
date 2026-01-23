@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 export default function FoundItemsDetailsPage() {
   const { id } = useParams();
@@ -14,7 +15,6 @@ export default function FoundItemsDetailsPage() {
     ownerStudentId: '',
     itemName: '',
     itemCategory: '',
-    id: '',
     founderName: '',
     founderStudentId: '',
     itemPickUpLocation: '',
@@ -33,7 +33,8 @@ export default function FoundItemsDetailsPage() {
 
       const data = await res.json();
 
-      setFoundItem((prev) => ({
+      setFoundItem((prev) =>
+      ({
         ...prev,
         id: data.id,
         ownerName: data.owner_name,
@@ -59,11 +60,22 @@ export default function FoundItemsDetailsPage() {
   async function handleFound(e: React.FormEvent) {
   e.preventDefault();
 
+  const payload = {
+    ownerName: foundItem.ownerName,
+    ownerStudentId: foundItem.ownerStudentId,
+    itemName: foundItem.itemName,
+    itemCategory: foundItem.itemCategory,
+    founderName: foundItem.founderName,
+    founderStudentId: foundItem.founderStudentId,
+    itemPickUpLocation: foundItem.itemPickUpLocation,
+    details: foundItem.details,
+  };
+
   /* Save found item */
   const foundRes = await fetch(`http://localhost:3001/found-items/${id}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(foundItem),
+    body: JSON.stringify(payload),
   });
 
   if (!foundRes.ok) {
@@ -94,10 +106,11 @@ export default function FoundItemsDetailsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex justify-center p-6">
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className='w-xl p-4'>
       <form
         onSubmit={handleFound}
-        className="w-full max-w-xl bg-white rounded-xl shadow p-6 space-y-4"
+        className="w-full bg-white rounded-xl shadow p-5 space-y-4"
       >
         <h1 className="text-2xl font-bold text-gray-800">
           Report Found Item
@@ -185,6 +198,20 @@ export default function FoundItemsDetailsPage() {
           Submit Found Item
         </button>
       </form>
-    </div>
+      <div className="w-full mt-4 flex justify-between items-start">
+            <Link href={`/found-items`}>
+              <button className='bg-teal-500 text-white py-2 px-4 rounded-lg hover:bg-teal-600 transition font-medium '>Go to Found Items</button>
+            </Link>
+            <Link href={`/lost-items`}>
+              <button className='bg-teal-500 text-white py-2 px-4 rounded-lg hover:bg-teal-600 transition font-medium '>Go to Lost Items</button>
+            </Link>
+            <Link href={`/`}>
+              <button className='bg-cyan-500 text-white py-2 px-4 rounded-lg hover:bg-cyan-600 transition font-medium '>Back to home</button>
+            </Link>
+      </div>
+      </div>
+     </div>
   );
 }
+
+

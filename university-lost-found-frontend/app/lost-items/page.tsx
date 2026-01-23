@@ -43,6 +43,11 @@ export default function LostItemsPage() {
             <LostItemCardSkeleton key={i} />
           ))}
         </div>
+        <div className="mt-4">
+            <Link href={`/`}>
+              <button className='bg-cyan-500 text-white py-2 px-4 rounded-lg hover:bg-cyan-600 transition font-medium '>Back to home</button>
+            </Link>
+          </div>
       </div>
     </div>
   );
@@ -99,6 +104,11 @@ export default function LostItemsPage() {
           </li>
         ))}
       </ul>
+      <div className="mt-4">
+            <Link href={`/`}>
+              <button className='bg-cyan-500 text-white py-2 px-4 rounded-lg hover:bg-cyan-600 transition font-medium '>Back to home</button>
+            </Link>
+          </div>
     </div>
   </div>
 );

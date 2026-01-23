@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
+import Link from 'next/link';
 
 type FoundItem = {
   owner_name: string;
@@ -54,7 +55,8 @@ export default function FoundItemDetails() {
     const status = 'FOUND';
 
   return (
-  <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+  <div className="min-h-screen bg-gray-50 p-4 flex flex-col items-center justify-center">
+  <div className="flex flex-col p-4">
     <div className="w-full max-w-xl bg-white rounded-2xl shadow-md p-6">
       
       {/* Title */}
@@ -103,8 +105,17 @@ export default function FoundItemDetails() {
           No additional details provided.
         </p>
       )}
+      </div>
+      <div className="w-full mt-7 flex justify-between items-start">
+            <Link href={`/found-items`}>
+              <button className='bg-teal-500 text-white py-2 px-4 rounded-lg hover:bg-teal-600 transition font-medium'>Back to Found Items</button>
+            </Link>
+            <Link href={`/`}>
+              <button className='bg-cyan-500 text-white py-2 px-4 rounded-lg hover:bg-cyan-600 transition font-medium'>Back to home</button>
+            </Link>
+          </div>
+    </div> 
     </div>
-    </div>  
    );
 }
 

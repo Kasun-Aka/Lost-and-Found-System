@@ -53,8 +53,9 @@ export default function LostItemDetails() {
     }
 
   return (
-  <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-    <div className="w-full max-w-xl bg-white rounded-2xl shadow-md p-6">
+  <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
+    <div className="w-full max-w-xl">
+    <div className="w-full bg-white rounded-2xl shadow-md p-6">
       
       {/* Title */}
       <h1 className="text-3xl font-bold text-[#1B0085] mb-2">
@@ -117,6 +118,15 @@ export default function LostItemDetails() {
           </Link>
         </div>
     </div>
+    <div className="w-full mt-7 flex justify-between items-start">
+            <Link href={`/lost-items`}>
+              <button className='bg-teal-500 text-white py-2 px-4 rounded-lg hover:bg-teal-600 transition font-medium'>Back to Lost Items</button>
+            </Link>
+            <Link href={`/`}>
+              <button className='bg-cyan-500 text-white py-2 px-4 rounded-lg hover:bg-cyan-600 transition font-medium'>Back to home</button>
+            </Link>
+          </div>
+          </div>
   </div>
 );
 
@@ -153,6 +163,14 @@ export default function LostItemDetails() {
             <div className="mt-6 flex justify-end">
               <div className="h-10 w-36 bg-gray-200 rounded-lg animate-pulse"></div>
             </div>
+            <div className="w-full mt-7 flex justify-between items-start">
+            <Link href={`/found-items`}>
+              <button className='bg-teal-500 text-white py-2 px-4 rounded-lg hover:bg-teal-600 transition font-medium'>Back to Found Items</button>
+            </Link>
+            <Link href={`/`}>
+              <button className='bg-cyan-500 text-white py-2 px-4 rounded-lg hover:bg-cyan-600 transition font-medium'>Back to home</button>
+            </Link>
+          </div>
           </div>
         </div>
       );

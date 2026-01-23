@@ -1,5 +1,6 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { createClient } from '@supabase/supabase-js/dist/index.mjs';
+import { CreateFoundItemDto } from './dto/found-item.dto';
 
 @Injectable()
 export class FoundItemsService {
@@ -12,7 +13,7 @@ export class FoundItemsService {
     );
   }
 
-    async createFoundItem(id: string, data: any) {
+    async createFoundItem(id: string, data: CreateFoundItemDto) {
         const { data: inserted, error } = await this.supabase
           .from('found_items')
           .insert({

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 
 export default function ReportLostPage() {
   const [form, setForm] = useState({
@@ -41,10 +42,19 @@ export default function ReportLostPage() {
       console.log('Saved:', data);
 
       alert('Lost item reported successfully!');
+        setForm({
+          studentName: '',
+          studentId: '',
+          itemName: '',
+          itemCategory: '',
+          location: '',
+          lostDatetime: '',
+          details: '',
+        });
     }
 
   return (
-  <div className="min-h-screen bg-gray-50 flex items-center justify-center p-6">
+  <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-6">
     <form
       onSubmit={handleSubmit}
       className="w-full max-w-xl bg-white rounded-2xl shadow-md p-6 space-y-5"
@@ -157,6 +167,11 @@ export default function ReportLostPage() {
         Submit Lost Item Report
       </button>
     </form>
+    <div className="mt-4">
+      <Link href={`/`}>
+        <button className='bg-cyan-500 text-white py-2 px-4 rounded-lg hover:bg-cyan-600 transition font-medium '>Back to home</button>
+      </Link>
+    </div>
   </div>
 );
 
