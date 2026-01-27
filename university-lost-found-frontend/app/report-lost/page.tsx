@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { supabase } from '@/lib/supabaseClient';
 
 export default function ReportLostPage() {
   const [form, setForm] = useState({
@@ -21,14 +22,18 @@ export default function ReportLostPage() {
     setForm({ ...form, [e.target.name]: e.target.value });
   }
 
+  
 
   async function handleSubmit(e: React.FormEvent) {
       e.preventDefault();
+
+      const session = await supabase.auth.getSession();
 
       const res = await fetch('http://localhost:3001/lost-items', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${session.data.session?.access_token}`,
         },
         body: JSON.stringify(form),
       });

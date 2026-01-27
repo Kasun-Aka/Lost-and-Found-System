@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { supabase } from '@/lib/supabaseClient';
 
 export default function FoundItemsDetailsPage() {
   const { id } = useParams();
@@ -36,7 +37,6 @@ export default function FoundItemsDetailsPage() {
       setFoundItem((prev) =>
       ({
         ...prev,
-        id: data.id,
         ownerName: data.owner_name,
         ownerStudentId: data.owner_student_id,
         itemName: data.item_name,
@@ -72,9 +72,13 @@ export default function FoundItemsDetailsPage() {
   };
 
   /* Save found item */
+  const session = await supabase.auth.getSession();
+
   const foundRes = await fetch(`http://localhost:3001/found-items/${id}`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json',
+      Authorization: `Bearer ${session.data.session?.access_token}`,
+     },
     body: JSON.stringify(payload),
   });
 

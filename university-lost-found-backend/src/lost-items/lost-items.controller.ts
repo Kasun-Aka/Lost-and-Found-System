@@ -1,13 +1,17 @@
-import { Controller, Post, Body, Get, Param, Put } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, Put, UseGuards, Req } from '@nestjs/common';
 import { LostItemsService } from './lost-items.service';
 import { CreateLostItemDto } from './dto/create-lost-item.dto';
+import { AuthGuard } from '../auth/auth.guard';
+import { AdminGuard } from '../auth/admin.guard';
 
 @Controller('lost-items')
 export class LostItemsController {
   constructor(private readonly lostItemsService: LostItemsService) {}
 
+  @UseGuards(AuthGuard)
   @Post()
-  create(@Body() body: CreateLostItemDto) {
+  create(@Body() body: CreateLostItemDto, @Req() req: any,) {
+    const user = req.user;
     return this.lostItemsService.createLostItem(body);
   }
 

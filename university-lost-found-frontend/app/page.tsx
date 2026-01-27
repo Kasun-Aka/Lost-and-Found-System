@@ -5,6 +5,22 @@ import Link from 'next/link';
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white flex flex-col">
+      <div className="flex justify-end items-end px-4 py-8 gap-4">
+
+        <Link
+          href="/login">
+          <button className="bg-cyan-600 text-white px-4 py-2 rounded-lg hover:bg-cyan-700 transition font-medium ">
+          Login
+          </button>
+        </Link>
+        <Link
+          href="/register">
+        <button className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition font-medium ">
+          Register
+        </button>
+        </Link>
+      </div>
+
       {/* Hero Section */}
       <header className="flex-1 flex flex-col justify-center items-center text-center px-6">
         <h1 className="text-4xl md:text-5xl font-extrabold text-blue-700 mb-4">
