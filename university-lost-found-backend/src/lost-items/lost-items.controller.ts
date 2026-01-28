@@ -2,7 +2,6 @@ import { Controller, Post, Body, Get, Param, Put, UseGuards, Req } from '@nestjs
 import { LostItemsService } from './lost-items.service';
 import { CreateLostItemDto } from './dto/create-lost-item.dto';
 import { AuthGuard } from '../auth/auth.guard';
-import { AdminGuard } from '../auth/admin.guard';
 
 @Controller('lost-items')
 export class LostItemsController {
@@ -10,8 +9,7 @@ export class LostItemsController {
 
   @UseGuards(AuthGuard)
   @Post()
-  create(@Body() body: CreateLostItemDto, @Req() req: any,) {
-    const user = req.user;
+  create(@Body() body: CreateLostItemDto) {
     return this.lostItemsService.createLostItem(body);
   }
 
@@ -20,14 +18,24 @@ export class LostItemsController {
     return this.lostItemsService.getAllLostItems();
   }
 
+  @UseGuards(AuthGuard)
+  @Get('/mine')
+  findMine(@Req() req) {
+    const studentId = req.user.user_metadata?.student_id;
+
+    return this.lostItemsService.getLostItemsByUserId(studentId);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.lostItemsService.getLostItemById(id);
   }
 
+  @UseGuards(AuthGuard)
   @Put(':id')
   update(@Param('id') id: string, @Body() body: any) {
     return this.lostItemsService.updateLostItemStatus(id, body);
   }
+
 
 }

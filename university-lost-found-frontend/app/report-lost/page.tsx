@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabaseClient';
 
@@ -15,6 +15,29 @@ export default function ReportLostPage() {
     details: '',
   });
 
+  useEffect(() => {
+  async function loadUserMetadata() {
+    const { data, error } = await supabase.auth.getUser();
+
+    if (error || !data.user) {
+      console.error('User not authenticated');
+      return;
+    }
+
+    const { name, student_id } = data.user.user_metadata;
+
+    setForm((prev) => ({
+      ...prev,
+      studentName: name ?? '',
+      studentId: student_id ?? '',
+    }));
+
+    console.log(data.user.user_metadata.student_id);
+  }
+
+  loadUserMetadata();
+}, []);
+
 
   function handleChange(
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -22,7 +45,6 @@ export default function ReportLostPage() {
     setForm({ ...form, [e.target.name]: e.target.value });
   }
 
-  
 
   async function handleSubmit(e: React.FormEvent) {
       e.preventDefault();
@@ -37,6 +59,11 @@ export default function ReportLostPage() {
         },
         body: JSON.stringify(form),
       });
+
+      if (!session) {
+        alert('Not authenticated');
+      return;
+      }
 
       if (!res.ok) {
         alert('Failed to submit');
@@ -70,41 +97,37 @@ export default function ReportLostPage() {
           Report Lost Item
         </h1>
         <p className="text-sm text-gray-500 mt-1">
-          Please provide accurate details to help recover your item.
+          Please provide accurate details to help recover your item. (*) Required.
         </p>
       </div>
 
       {/* Student Info */}
       <div className="space-y-3">
         <div>
-          <label className="labelLost">Student Name</label>
+          <label className="labelLost">Student Name *</label>
           <input
             name="studentName"
-            required
             value={form.studentName}
-            onChange={handleChange}
-            placeholder="e.g. John Watson"
-            className="inputLost"
-          />
+            readOnly
+            className="inputLost bg-gray-100 text-gray-600 cursor-not-allowed"
+            />
         </div>
 
         <div>
-          <label className="labelLost">Student ID</label>
+          <label className="labelLost">Student ID *</label>
           <input
             name="studentId"
-            required
             value={form.studentId}
-            onChange={handleChange}
-            placeholder="e.g. IT24XXXX"
-            className="inputLost"
-          />
+            readOnly
+            className="inputLost bg-gray-100 text-gray-600 cursor-not-allowed"
+            />
         </div>
       </div>
 
       {/* Item Info */}
       <div className="space-y-3">
         <div>
-          <label className="labelLost">Item Name</label>
+          <label className="labelLost">Item Name *</label>
           <input
             name="itemName"
             required
@@ -116,7 +139,7 @@ export default function ReportLostPage() {
         </div>
 
         <div>
-          <label className="labelLost">Category</label>
+          <label className="labelLost">Category *</label>
           <input
             name="itemCategory"
             required
@@ -128,7 +151,7 @@ export default function ReportLostPage() {
         </div>
 
         <div>
-          <label className="labelLost">Lost Location</label>
+          <label className="labelLost">Lost Location *</label>
           <input
             name="location"
             required
@@ -140,7 +163,7 @@ export default function ReportLostPage() {
         </div>
 
         <div>
-          <label className="labelLost">Lost Date & Time</label>
+          <label className="labelLost">Lost Date & Time *</label>
           <input
             type="datetime-local"
             required

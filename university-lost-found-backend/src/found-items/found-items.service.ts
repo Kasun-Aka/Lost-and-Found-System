@@ -82,4 +82,22 @@ export class FoundItemsService {
         return data;
     }
 
+    async getAllFoundItemsByUserID(studentId: string) {
+      const { data, error } = await this.supabase
+        .from('found_items')
+        .select(`
+          id,
+          item_name,
+          lost_item_id
+        `)
+        .eq('owner_student_id', studentId)
+        .order('id', { ascending: false });
+
+      if (error) {
+        throw new InternalServerErrorException(error.message);
+      }
+
+      return data;
+    }
+
 }

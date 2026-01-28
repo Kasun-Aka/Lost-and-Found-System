@@ -10,16 +10,19 @@ The system follows a full-stack architecture with a REST API backend and a moder
 
 
 ## Current Features
+- Home Page
+- User Management system with authentications
 - Report a lost item
 - View all reported lost items
 - View detailed lost items
 - Reporting a found item
-- RESTful API structure
 - Database integration with Supabase
+- Aunthentication integration with Supabase
 
 ## Tech Stack
 - **Frontend:** Next.js (React)
 - **Backend:** NestJS
 - **Database:** Supabase (PostgreSQL)
+- **Authentication:** Supabase
 - **API Style:** REST
 

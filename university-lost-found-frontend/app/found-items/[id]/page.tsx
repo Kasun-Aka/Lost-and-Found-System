@@ -22,6 +22,27 @@ export default function FoundItemsDetailsPage() {
     details: '',
   });
 
+  useEffect(() => {
+  async function loadUserMetadata() {
+    const { data, error } = await supabase.auth.getUser();
+
+    if (error || !data.user) {
+      console.error('User not authenticated');
+      return;
+    }
+
+    const { name, student_id } = data.user.user_metadata;
+
+    setFoundItem((prev) => ({
+      ...prev,
+      founderName: name ?? '',
+      founderStudentId: student_id ?? '',
+    }));
+  }
+
+  loadUserMetadata();
+}, []);
+
   /* ---------------- FETCH LOST ITEM ---------------- */
   useEffect(() => {
     async function fetchLostItem() {
@@ -111,7 +132,7 @@ export default function FoundItemsDetailsPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-      <div className='w-xl p-4'>
+      <div className='w-2xl p-3'>
       <form
         onSubmit={handleFound}
         className="w-full bg-white rounded-xl shadow p-5 space-y-4"
@@ -119,10 +140,11 @@ export default function FoundItemsDetailsPage() {
         <h1 className="text-2xl font-bold text-gray-800">
           Report Found Item
         </h1>
+        <p className="text-red-400">You can stay anonymous if you prefer. Enter "Anonymous" as Your Name and Student ID. (*) Required.</p>
 
         {/* FOUND BY */}
         <div>
-          <label className="labelLost">Your Name</label>
+          <label className="labelLost">Your Name *</label>
           <input
             name="founderName"
             required
@@ -133,7 +155,7 @@ export default function FoundItemsDetailsPage() {
         </div>
 
         <div>
-          <label className="labelLost">Your Student ID</label>
+          <label className="labelLost">Your Student ID *</label>
           <input
             name="founderStudentId"
             required
@@ -142,8 +164,6 @@ export default function FoundItemsDetailsPage() {
             className="inputLost"
           />
         </div>
-
-        <hr />
 
         {/* LOST ITEM (READ ONLY) */}
         <div>
@@ -175,7 +195,7 @@ export default function FoundItemsDetailsPage() {
 
         {/* PICKUP */}
         <div>
-          <label className="labelLost">Pick Up Location</label>
+          <label className="labelLost">Pick Up Location *</label>
           <input
             name="itemPickUpLocation"
             required
@@ -215,6 +235,7 @@ export default function FoundItemsDetailsPage() {
       </div>
       </div>
      </div>
+
   );
 }
 

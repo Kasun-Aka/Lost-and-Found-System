@@ -6,7 +6,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white flex flex-col">
       <div className="flex justify-end items-end px-4 py-8 gap-4">
-
+        
         <Link
           href="/login">
           <button className="bg-cyan-600 text-white px-4 py-2 rounded-lg hover:bg-cyan-700 transition font-medium ">
@@ -74,21 +74,21 @@ export default function HomePage() {
       <section className="bg-white border-t py-10 px-6">
         <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
           <div>
-            <h3 className="font-semibold text-lg mb-2">Secure & Verified</h3>
+            <h3 className="font-semibold text-lg text-gray-400 mb-2">Secure & Verified</h3>
             <p className="text-gray-600 text-sm">
               Student-based reporting ensures accountability and trust.
             </p>
           </div>
 
           <div>
-            <h3 className="font-semibold text-lg mb-2">Fast & Simple</h3>
+            <h3 className="font-semibold text-lg text-gray-400 mb-2">Fast & Simple</h3>
             <p className="text-gray-600 text-sm">
               Minimal steps to report or claim an item.
             </p>
           </div>
 
           <div>
-            <h3 className="font-semibold text-lg mb-2">University Focused</h3>
+            <h3 className="font-semibold text-lg text-gray-400 mb-2">University Focused</h3>
             <p className="text-gray-600 text-sm">
               Designed specifically for campus-level use.
             </p>
@@ -101,5 +101,17 @@ export default function HomePage() {
         © {new Date().getFullYear()} University Lost & Found System
       </footer>
     </div>
+
+
+    /* Change with the login and sign in button after a successfull login
+    <Link href="/user/[id]">
+        <button className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition font-medium ">
+          Profile
+        </button>
+        </Link>
+        <button className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition font-medium ">
+          LogOut
+        </button>
+    */
   );
 }

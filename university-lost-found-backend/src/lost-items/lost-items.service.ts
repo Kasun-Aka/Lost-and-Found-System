@@ -101,4 +101,24 @@ export class LostItemsService {
     
       return data;
     }
+
+    async getLostItemsByUserId(userId: string) {
+      const { data, error } = await this.supabase
+        .from('lost_items')
+        .select(`
+          id,
+          item_name,
+          status
+        `)
+        .eq('owner_student_id', userId)
+        .in('status', ['LOST'])
+        .order('lost_at', { ascending: false });
+
+      if (error) {
+        throw new InternalServerErrorException(error.message);
+      }
+
+      return data;
+    }
+  
 }

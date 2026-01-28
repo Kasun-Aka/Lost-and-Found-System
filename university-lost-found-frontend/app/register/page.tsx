@@ -6,6 +6,8 @@ import { useRouter } from 'next/navigation';
 
 export default function RegisterPage() {
   const router = useRouter();
+  const [name, setName] = useState('');
+  const [studentId, setStudentId] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -17,6 +19,12 @@ export default function RegisterPage() {
     const { error } = await supabase.auth.signUp({
       email,
       password,
+      options: {
+      data: {
+        name,
+        student_id: studentId,
+        },
+      },  
     });
 
     setLoading(false);
@@ -38,6 +46,24 @@ export default function RegisterPage() {
       >
         <h1 className="text-xl font-bold text-center">Register</h1>
 
+        <input
+          type="text"
+          required
+          placeholder="Name"
+          className="inputLost"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+
+        <input
+          type="text"
+          required
+          placeholder="Student ID"
+          className="inputLost"
+          value={studentId}
+          onChange={(e) => setStudentId(e.target.value)}
+        />
+        
         <input
           type="email"
           required
