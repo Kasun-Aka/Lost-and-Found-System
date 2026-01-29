@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { API_BASE_URL } from "@/api/config";
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 
@@ -27,7 +28,7 @@ export default function LostItemDetails() {
     if (!id) return;
 
     async function fetchItem() {
-      const res = await fetch(`http://localhost:3001/lost-items/${id}`);
+      const res = await fetch(`${API_BASE_URL}/lost-items/${id}`);
       if (!res.ok) {
         setLoading(false);
         return;

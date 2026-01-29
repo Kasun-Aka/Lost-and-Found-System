@@ -1,7 +1,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { API_BASE_URL } from "@/api/config";
 import Link from 'next/link';
+import { supabase } from '@/lib/supabaseClient';
 
 type FoundItem = {
   id: string;
@@ -18,6 +20,7 @@ type FoundItem = {
 export default function FoundItemsPage() {
   const [foundItems, setFoundItems] = useState<FoundItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   /* --- PAGING SYSTEM LOGIC --- */
   const [currentPage, setCurrentPage] = useState(1);
@@ -25,10 +28,29 @@ export default function FoundItemsPage() {
 
   useEffect(() => {
     async function fetchFoundItems() {
-      const res = await fetch('http://localhost:3001/found-items');
-      const data = await res.json();
-      setFoundItems(data);
-      setLoading(false);
+      try {
+        const session = await supabase.auth.getSession();
+        const token = session.data.session?.access_token;
+
+        const res = await fetch(`${API_BASE_URL}/found-items`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+
+        if (res.status === 403 || res.status === 401) {
+          setError("Access Denied: Admin privileges required to view found items.");
+          setLoading(false);
+          return;
+        }
+
+        if (!res.ok) throw new Error("Failed to fetch data");
+
+        const data = await res.json();
+        setFoundItems(data);
+      } catch (err) {
+        setError("Something went wrong while fetching data.");
+      } finally {
+        setLoading(false);
+      }
     }
     fetchFoundItems();
   }, []);
@@ -49,11 +71,24 @@ export default function FoundItemsPage() {
               <LostItemCardSkeleton key={i} />
             ))}
           </div>
-          <div className="mt-4">
-            <Link href={`/`}>
-              <button className='bg-cyan-500 text-white py-2 px-4 rounded-lg hover:bg-cyan-600 transition font-medium '>Back to home</button>
-            </Link>
-          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Error State for Admin Guard failure
+  if (error) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center p-6">
+        <div className="max-w-md w-full bg-white rounded-3xl shadow-xl shadow-slate-200 p-10 text-center border border-slate-100">
+          <div className="text-4xl mb-4">🔐</div>
+          <h1 className="text-2xl font-bold text-slate-800 mb-2">Restricted Area</h1>
+          <p className="text-slate-500 mb-8 leading-relaxed">{error}</p>
+          <Link href="/">
+            <button className="w-full bg-[#1B0085] text-white py-3.5 rounded-2xl font-bold hover:bg-indigo-800 transition">
+              Return to Home
+            </button>
+          </Link>
         </div>
       </div>
     );
@@ -62,7 +97,13 @@ export default function FoundItemsPage() {
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-3xl font-bold text-gray-800 mb-6">Found Items</h1>
+        {/* Header with Admin Badge */}
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-3xl font-bold text-gray-800">Found Items</h1>
+          <div className="bg-white px-4 py-1.5 rounded-full border border-slate-200 text-xs font-bold text-slate-500 uppercase tracking-widest">
+            Admin Access
+          </div>
+        </div>
 
         {foundItems.length === 0 && (
           <p className="text-gray-500 italic">No found items reported yet.</p>
@@ -72,12 +113,15 @@ export default function FoundItemsPage() {
           {currentItems.map((item) => (
             <li key={item.id}>
               <Link href={`/found-items/found/${item.id}`}>
+                {/* YOUR ORIGINAL DESIGN */}
                 <div className="bg-white rounded-xl shadow-sm p-5 hover:shadow-md transition cursor-pointer">
                   <div className="flex items-start justify-between mb-2">
                     <h2 className="text-lg font-semibold text-[#1B0085]">{item.item_name}</h2>
                     <div className="flex gap-2">
                       <StatusBadge status={item.status} />
-                      <span className="text-xs px-2 py-1 rounded-full bg-blue-100 text-blue-700">{item.category}</span>
+                      <span className="text-xs px-2 py-1 rounded-full bg-blue-100 text-blue-700">
+                        {item.category}
+                      </span>
                     </div>
                   </div>
                   <p className="text-sm text-gray-600 mb-1">📍 {item.location_description}</p>
@@ -108,7 +152,9 @@ export default function FoundItemsPage() {
 
         <div className="mt-8">
           <Link href={`/`}>
-            <button className='bg-cyan-500 text-white py-2 px-4 rounded-lg hover:bg-cyan-600 transition font-medium '>Back to home</button>
+            <button className='bg-cyan-500 text-white py-2 px-4 rounded-lg hover:bg-cyan-600 transition font-medium'>
+              Back to home
+            </button>
           </Link>
         </div>
       </div>

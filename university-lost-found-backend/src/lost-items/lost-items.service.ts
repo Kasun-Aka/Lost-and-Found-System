@@ -119,5 +119,16 @@ export class LostItemsService {
 
       return data;
     }
+
+    async getAllLostItemsList() {
+      const { data, error } = await this.supabase
+        .from('lost_items')
+        .select(`
+          id`);
+      if (error) {
+        throw new InternalServerErrorException(error.message);
+      }
+      return data;
+    }
   
 }

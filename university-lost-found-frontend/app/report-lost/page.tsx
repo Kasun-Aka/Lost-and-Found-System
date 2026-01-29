@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { API_BASE_URL } from "@/api/config";
 import Link from 'next/link';
 import { supabase } from '@/lib/supabaseClient';
 import { useRouter } from 'next/navigation';
@@ -56,7 +57,7 @@ export default function ReportLostPage() {
       return;
     }
 
-    const res = await fetch('http://localhost:3001/lost-items', {
+    const res = await fetch(`${API_BASE_URL}/lost-items`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

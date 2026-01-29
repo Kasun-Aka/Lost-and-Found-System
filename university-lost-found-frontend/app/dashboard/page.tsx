@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { API_BASE_URL } from "@/api/config";
 import Link from 'next/link';
 import { supabase } from '@/lib/supabaseClient';
 
@@ -33,7 +34,7 @@ export default function DashboardPage() {
     const session = await supabase.auth.getSession();
     const token = session.data.session?.access_token;
 
-    const lostRes = await fetch('http://localhost:3001/lost-items/mine', {
+    const lostRes = await fetch(`${API_BASE_URL}/lost-items/mine`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     setLostItems(await lostRes.json());
@@ -43,7 +44,7 @@ export default function DashboardPage() {
     const session = await supabase.auth.getSession();
     const token = session.data.session?.access_token;
     
-    const res = await fetch(`http://localhost:3001/lost-items/${lostItemId}`, {
+    const res = await fetch(`${API_BASE_URL}/lost-items/${lostItemId}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
       body: JSON.stringify({ status: 'CLAIMED' }),

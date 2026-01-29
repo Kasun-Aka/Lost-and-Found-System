@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
+import { API_BASE_URL } from "@/api/config";
 import Link from 'next/link';
 
 type FoundItem = {
@@ -22,7 +23,7 @@ export default function FoundItemDetails() {
 
   useEffect(() => {
     async function fetchItem() {
-      const res = await fetch(`http://localhost:3001/found-items/found/${id}`);
+      const res = await fetch(`${API_BASE_URL}/found-items/found/${id}`);
       if (res.ok) setItem(await res.json());
       setLoading(false);
     }

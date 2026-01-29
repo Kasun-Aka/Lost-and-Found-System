@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { API_BASE_URL } from "@/api/config";
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabaseClient';
@@ -38,7 +39,7 @@ export default function FoundItemsDetailsPage() {
 
   useEffect(() => {
     async function fetchLostItem() {
-      const res = await fetch(`http://localhost:3001/lost-items/${id}`);
+      const res = await fetch(`${API_BASE_URL}/lost-items/${id}`);
       if (!res.ok) { alert('Lost item not found'); return; }
       const data = await res.json();
       setFoundItem((prev) => ({
@@ -60,7 +61,7 @@ export default function FoundItemsDetailsPage() {
   async function handleFound(e: React.FormEvent) {
     e.preventDefault();
     const session = await supabase.auth.getSession();
-    const foundRes = await fetch(`http://localhost:3001/found-items/${id}`, {
+    const foundRes = await fetch(`${API_BASE_URL}/found-items/${id}`, {
       method: 'POST',
       headers: { 
         'Content-Type': 'application/json',
@@ -71,9 +72,11 @@ export default function FoundItemsDetailsPage() {
 
     if (!foundRes.ok) { alert('Failed to submit found item'); return; }
 
-    const statusRes = await fetch(`http://localhost:3001/lost-items/${id}`, {
+    const statusRes = await fetch(`${API_BASE_URL}/lost-items/${id}`, {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json',
+        Authorization: `Bearer ${session.data.session?.access_token}`,
+       },
       body: JSON.stringify({ status: 'FOUND' }),
     });
 

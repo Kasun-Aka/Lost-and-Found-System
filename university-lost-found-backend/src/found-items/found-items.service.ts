@@ -100,4 +100,14 @@ export class FoundItemsService {
       return data;
     }
 
+    async getAllFoundItemsList() {
+      const { data, error } = await this.supabase
+        .from('found_items')
+        .select('id');
+      if (error) {
+        throw new InternalServerErrorException(error.message);
+      }
+
+      return data;
+    }
 }

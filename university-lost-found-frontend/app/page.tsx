@@ -119,13 +119,13 @@ export default function HomePage() {
           </Link>
 
           <Link
-            href="/found-items"
+            href="/about-us"
             className="group rounded-2xl bg-white border border-slate-200 p-8 text-center shadow-sm hover:shadow-md hover:border-emerald-300 transition-all"
           >
-            <div className="text-3xl mb-3">🤝</div>
-            <h2 className="text-xl font-bold text-slate-800 mb-2">Found Items</h2>
+            <div className="text-3xl mb-3">ℹ️</div>
+            <h2 className="text-xl font-bold text-slate-800 mb-2">About Us</h2>
             <p className="text-sm text-slate-500">
-              Found something? Check if someone has claimed it.
+              Learn more about us, our mission and the developer behind the system.
             </p>
           </Link>
         </div>

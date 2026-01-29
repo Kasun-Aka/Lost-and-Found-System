@@ -9,13 +9,18 @@ export class LostItemsController {
 
   @UseGuards(AuthGuard)
   @Post()
-  create(@Body() body: CreateLostItemDto) {
+  create(@Body() body: CreateLostItemDto, @Req() req) {
     return this.lostItemsService.createLostItem(body);
   }
 
   @Get()
   findAll() {
     return this.lostItemsService.getAllLostItems();
+  }
+
+  @Get('/list')
+  getAllLostItemsList() {
+    return this.lostItemsService.getAllLostItemsList();
   }
 
   @UseGuards(AuthGuard)
@@ -33,7 +38,7 @@ export class LostItemsController {
 
   @UseGuards(AuthGuard)
   @Put(':id')
-  updateFound(@Param('id') id: string, @Body() body: any) {
+  updateFound(@Param('id') id: string, @Body() body: any, @Req() req) {
     return this.lostItemsService.updateLostItemStatus(id, body);
   }
 

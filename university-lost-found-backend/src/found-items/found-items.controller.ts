@@ -2,15 +2,21 @@ import { Body, Controller, Post, Param, Get, UseGuards, Req } from '@nestjs/comm
 import { FoundItemsService } from './found-items.service';
 import { CreateFoundItemDto } from './dto/found-item.dto';
 import { AuthGuard } from '../auth/auth.guard';
+import { AdminGuard } from '../auth/admin.guard';
 
 @Controller('found-items')
 export class FoundItemsController {
     constructor(private readonly foundItemsService: FoundItemsService) {}
 
-    
+    @UseGuards(AuthGuard, AdminGuard)
     @Get()
-    getAllFoundItems() {
+    getAllFoundItems(@Req() req) {
       return this.foundItemsService.getAllFoundItems();
+    }
+
+    @Get('/list')
+    getAllFoundItemsList() {
+      return this.foundItemsService.getAllFoundItemsList();
     }
 
     @UseGuards(AuthGuard)
@@ -22,7 +28,7 @@ export class FoundItemsController {
 
     @UseGuards(AuthGuard)
     @Post(':id')
-    createFoundItem(@Param('id') id: string, @Body() body:CreateFoundItemDto) {
+    createFoundItem(@Param('id') id: string, @Body() body:CreateFoundItemDto, @Req() req) {
       return this.foundItemsService.createFoundItem(id, body);
     }
 
