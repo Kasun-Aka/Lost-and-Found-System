@@ -111,7 +111,6 @@ export class LostItemsService {
           status
         `)
         .eq('owner_student_id', userId)
-        .in('status', ['LOST'])
         .order('lost_at', { ascending: false });
 
       if (error) {

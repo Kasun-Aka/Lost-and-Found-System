@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-import Link from 'next/dist/client/link';
+import Link from 'next/link';
 
 type LostItem = {
   id: string;
@@ -28,162 +28,147 @@ export default function LostItemDetails() {
 
     async function fetchItem() {
       const res = await fetch(`http://localhost:3001/lost-items/${id}`);
-
       if (!res.ok) {
         setLoading(false);
         return;
       }
-
       const data = await res.json();
       setItem(data);
       setLoading(false);
     }
-
     fetchItem();
   }, [id]);
 
-  if (loading) {
-      return <LostItemDetailsSkeleton />;
-    }
-
-  if (!item) {
-      return (
-        <LostItemDetailsSkeleton title="Item Not Found" />
-      );
-    }
+  if (loading) return <LostItemDetailsSkeleton />;
+  if (!item) return <LostItemDetailsSkeleton title="Item Not Found" />;
 
   return (
-  <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
-    <div className="w-full max-w-xl">
-    <div className="w-full bg-white rounded-2xl shadow-md p-6">
-      
-      {/* Title */}
-      <h1 className="text-3xl font-bold text-[#1B0085] mb-2">
-        {item.item_name}
-      </h1>
+    <div className="min-h-screen bg-slate-50 flex flex-col items-center py-12 px-4">
+      <div className="w-full max-w-xl">
+        {/* Main Content Card */}
+        <div className="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden">
+          {/* Header Section */}
+          <div className="bg-slate-50 border-b border-slate-100 p-8">
+            <div className="flex items-center gap-3 mb-4">
+              <StatusBadge status={item.status} />
+              <span className="px-3 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-700 uppercase tracking-wider">
+                {item.category}
+              </span>
+            </div>
+            <h1 className="text-4xl font-bold text-slate-900 leading-tight">
+              {item.item_name}
+            </h1>
+          </div>
 
-      {/* Status and Category */}
-      <div className="flex items-center gap-2 mb-4">
-        <StatusBadge status={item.status} />
-        <span className="px-3 py-1 text-sm rounded-full bg-blue-100 text-blue-700">
-          {item.category}
-        </span>
-      </div>
+          <div className="p-8">
+            {/* Info Grid */}
+            <div className="grid gap-6">
+              <div className="flex items-start gap-4">
+                <div className="bg-indigo-50 p-3 rounded-2xl text-indigo-600">
+                  📍
+                </div>
+                <div>
+                  <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest">Last Seen At</p>
+                  <p className="text-slate-700 font-medium">{item.location_description}</p>
+                </div>
+              </div>
 
-      {/* Info grid */}
-      <div className="space-y-3 text-gray-700">
-        <div className="flex justify-between">
-          <span className="font-medium text-[#501FAB]">📍 Location</span>
-          <span>{item.location_description}</span>
+              <div className="flex items-start gap-4">
+                <div className="bg-indigo-50 p-3 rounded-2xl text-indigo-600">
+                  🕒
+                </div>
+                <div>
+                  <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest">Time Lost</p>
+                  <p className="text-slate-700 font-medium">{new Date(item.lost_at).toLocaleString()}</p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-4">
+                <div className="bg-indigo-50 p-3 rounded-2xl text-indigo-600">
+                  👤
+                </div>
+                <div>
+                  <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest">Reported By</p>
+                  <p className="text-slate-700 font-medium">
+                    {item.owner_name} <span className="text-slate-400 ml-1 text-sm">({item.owner_student_id})</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <hr className="my-8 border-slate-100" />
+
+            {/* Description Section */}
+            <div>
+              <h2 className="text-sm font-bold text-slate-900 mb-3">Additional Details</h2>
+              {item.description ? (
+                <p className="text-slate-600 leading-relaxed bg-slate-50 p-5 rounded-2xl italic border border-slate-100">
+                  "{item.description}"
+                </p>
+              ) : (
+                <p className="text-slate-400 italic">No additional details provided.</p>
+              )}
+            </div>
+
+            {/* Action Button */}
+            <div className="mt-10">
+              <Link href={`/found-items/${item.id}`}>
+                <button className="w-full bg-[#1B0085] text-white py-4 rounded-2xl hover:bg-[#2a0e9c] transition shadow-lg shadow-indigo-100 font-semibold text-lg">
+                  I found this item
+                </button>
+              </Link>
+            </div>
+          </div>
         </div>
 
-        <div className="flex justify-between">
-          <span className="font-medium text-[#501FAB]">🕒 Lost at</span>
-          <span>{new Date(item.lost_at).toLocaleString()}</span>
-        </div>
-
-        <div className="flex justify-between">
-          <span className="font-medium text-[#501FAB]">👤 Reported by</span>
-          <span>
-            {item.owner_name} ({item.owner_student_id})
-          </span>
-        </div>
-      </div>
-
-      {/* Divider */}
-      <hr className="my-5" />
-
-      {/* Description */}
-      {item.description ? (
-        <div>
-          <h2 className="font-semibold text-gray-800 mb-1">
-            Additional Details
-          </h2>
-          <p className="text-gray-600 leading-relaxed">
-            {item.description}
-          </p>
-        </div>
-      ) : (
-        <p className="text-gray-400 italic">
-          No additional details provided.
-        </p>
-      )}
-
-      {/* Footer action */}
-      <div className="mt-6 text-right">
-          <Link href={`/found-items/${item.id}`}>
-            <button className="px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition">
-              I found this item
+        {/* Navigation Buttons */}
+        <div className="w-full mt-8 flex justify-between items-center px-2">
+          <button className='bg-emerald-400 border border-slate-200 text-white-600 py-2 px-6 rounded-xl hover:bg-emerald-500 transition font-medium shadow-sm'>
+          <Link href={`/lost-items`} className="text-white hover:text-white flex items-center gap-2 transition font-medium">
+            ← Back to Lost Items
+          </Link>
+          </button>
+          <Link href={`/`}>
+            <button className='bg-red-100 border border-slate-200 text-red-400 py-2 px-6 rounded-xl hover:bg-red-200 transition font-medium shadow-sm'>
+              Home
             </button>
           </Link>
         </div>
+      </div>
     </div>
-    <div className="w-full mt-7 flex justify-between items-start">
-            <Link href={`/lost-items`}>
-              <button className='bg-teal-500 text-white py-2 px-4 rounded-lg hover:bg-teal-600 transition font-medium'>Back to Lost Items</button>
-            </Link>
-            <Link href={`/`}>
-              <button className='bg-cyan-500 text-white py-2 px-4 rounded-lg hover:bg-cyan-600 transition font-medium'>Back to home</button>
-            </Link>
-          </div>
-          </div>
-  </div>
-);
+  );
 
-    interface Props {
-        title?: string;
-    }
-
-    function LostItemDetailsSkeleton({title}: Props) {
-      return (
-        <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-          <div className="w-full max-w-xl bg-white rounded-2xl shadow-md p-6">
-
-            {title ? (
-              <h1 className="text-3xl font-bold text-[#1B0085] mb-2 animate-none">
-                {title}
-              </h1>
-            ) : (
-              <div className="h-7 w-48 bg-gray-200 rounded mb-4 animate-pulse"></div>
-            )}
-
-            <div className="h-4 w-24 bg-gray-200 rounded-full mb-6 animate-pulse"></div>
-
-            <div className="space-y-3">
-              <div className="h-4 w-full bg-gray-200 rounded animate-pulse"></div>
-              <div className="h-4 w-full bg-gray-200 rounded animate-pulse"></div>
-              <div className="h-4 w-full bg-gray-200 rounded animate-pulse"></div>
+  function LostItemDetailsSkeleton({ title }: { title?: string }) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
+        <div className="w-full max-w-xl bg-white rounded-3xl shadow-sm p-8 border border-slate-200">
+          {title ? (
+            <h1 className="text-3xl font-bold text-slate-900 mb-4">{title}</h1>
+          ) : (
+            <div className="space-y-4 animate-pulse">
+              <div className="h-4 w-24 bg-slate-200 rounded-full"></div>
+              <div className="h-10 w-64 bg-slate-200 rounded-xl"></div>
+              <div className="space-y-3 pt-6">
+                <div className="h-12 w-full bg-slate-100 rounded-2xl"></div>
+                <div className="h-12 w-full bg-slate-100 rounded-2xl"></div>
+                <div className="h-12 w-full bg-slate-100 rounded-2xl"></div>
+              </div>
             </div>
-
-            <hr className="my-5" />
-
-            <div className="h-4 w-full bg-gray-200 rounded mb-2 animate-pulse"></div>
-            <div className="h-4 w-5/6 bg-gray-200 rounded animate-pulse"></div>
-
-            <div className="mt-6 flex justify-end">
-              <div className="h-10 w-36 bg-gray-200 rounded-lg animate-pulse"></div>
-            </div>
-            <div className="w-full mt-7 flex justify-between items-start">
-            <Link href={`/found-items`}>
-              <button className='bg-teal-500 text-white py-2 px-4 rounded-lg hover:bg-teal-600 transition font-medium'>Back to Found Items</button>
-            </Link>
-            <Link href={`/`}>
-              <button className='bg-cyan-500 text-white py-2 px-4 rounded-lg hover:bg-cyan-600 transition font-medium'>Back to home</button>
-            </Link>
-          </div>
+          )}
+          <div className="mt-8">
+            <Link href="/lost-items" className="text-[#1B0085] font-medium underline">← Back to Lost Items</Link>
           </div>
         </div>
-      );
-    }
+      </div>
+    );
+  }
 
-    function StatusBadge({ status }: { status: 'LOST' | 'FOUND' }) {
-    const styles =
-      status === 'LOST'
-        ? 'bg-red-100 text-red-700'
-        : 'bg-green-100 text-green-700';
-
+  function StatusBadge({ status }: { status: 'LOST' | 'FOUND' }) {
+    const styles = status === 'LOST' 
+      ? 'bg-red-50 text-red-600 border-red-100' 
+      : 'bg-green-50 text-green-600 border-green-100';
     return (
-      <span className={`text-xs px-2 py-1 rounded-full ${styles}`}>
+      <span className={`text-[10px] font-bold px-2.5 py-1 rounded-md border uppercase tracking-wider ${styles}`}>
         {status}
       </span>
     );

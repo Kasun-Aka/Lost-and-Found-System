@@ -7,6 +7,7 @@ import { AuthGuard } from '../auth/auth.guard';
 export class FoundItemsController {
     constructor(private readonly foundItemsService: FoundItemsService) {}
 
+    
     @Get()
     getAllFoundItems() {
       return this.foundItemsService.getAllFoundItems();

@@ -33,9 +33,15 @@ export class LostItemsController {
 
   @UseGuards(AuthGuard)
   @Put(':id')
-  update(@Param('id') id: string, @Body() body: any) {
+  updateFound(@Param('id') id: string, @Body() body: any) {
     return this.lostItemsService.updateLostItemStatus(id, body);
   }
 
+  @UseGuards(AuthGuard)
+  @Put(':id')
+  updateClaim(@Param('id') id: string, @Req() req, @Body() body: any) {
+    const studentId = req.user.user_metadata?.student_id;
+    return this.lostItemsService.updateLostItemStatus(id, body);
+  }
 
 }
