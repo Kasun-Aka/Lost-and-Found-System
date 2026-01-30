@@ -97,7 +97,6 @@ export default function FoundItemsPage() {
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-4xl mx-auto">
-        {/* Header with Admin Badge */}
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-3xl font-bold text-gray-800">Found Items</h1>
           <div className="bg-white px-4 py-1.5 rounded-full border border-slate-200 text-xs font-bold text-slate-500 uppercase tracking-widest">
@@ -113,7 +112,6 @@ export default function FoundItemsPage() {
           {currentItems.map((item) => (
             <li key={item.id}>
               <Link href={`/found-items/found/${item.id}`}>
-                {/* YOUR ORIGINAL DESIGN */}
                 <div className="bg-white rounded-xl shadow-sm p-5 hover:shadow-md transition cursor-pointer">
                   <div className="flex items-start justify-between mb-2">
                     <h2 className="text-lg font-semibold text-[#1B0085]">{item.item_name}</h2>

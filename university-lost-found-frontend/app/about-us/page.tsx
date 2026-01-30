@@ -41,7 +41,7 @@ export default function AboutUsPage() {
             <div className="bg-amber-100 text-3xl p-4 rounded-2xl">🔎</div>
             <div>
               <h3 className="text-3xl font-bold text-slate-800">{stats.lostCount}</h3>
-              <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Active Lost Reports</p>
+              <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Lost Reports</p>
             </div>
           </div>
           <div className="bg-white p-8 rounded-3xl border border-slate-100 flex items-center gap-6 shadow-sm">

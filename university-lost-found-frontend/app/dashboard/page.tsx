@@ -88,9 +88,14 @@ export default function DashboardPage() {
         {/* Header */}
         <div className="flex justify-between items-center">
           <h1 className="text-3xl font-bold text-slate-900 tracking-tight">My Dashboard</h1>
+          <div className="flex gap-4">
+          <Link href="/found-items" className="bg-blue-200 border border-slate-400 text-gray-900 px-5 py-2 rounded-xl hover:bg-blue-300 transition font-medium shadow-sm">
+            Found Items (Admins)
+          </Link>
           <Link href="/" className="bg-slate-300 border border-slate-400 text-gray-900 px-5 py-2 rounded-xl hover:bg-slate-50 transition font-medium shadow-sm">
             Back to Home
           </Link>
+          </div>
         </div>
 
         {/* Profile Section */}
@@ -180,4 +185,6 @@ export default function DashboardPage() {
       </div>
     </div>
   );
+
+
 }
