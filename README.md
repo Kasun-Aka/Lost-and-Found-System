@@ -83,8 +83,10 @@ Create a `.env` file in the **root directory** (next to `docker-compose.yml`) an
 # Frontend & Build Keys
 NEXT_PUBLIC_SUPABASE_URL=https://your-project-id.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key-here
-
+```
 Create a `.env` file in the **backend directory**:
+
+```env
 # Backend Keys
 SUPABASE_URL=https://your-project-id.supabase.co
 SUPABASE_SERVICE_ROLE_KEY=your-service-role-key-here
