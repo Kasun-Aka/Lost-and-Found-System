@@ -109,14 +109,14 @@ Backend API → http://localhost:3001
 
 ## 🧠 System Architecture
 
-[ Next.js Frontend ]
-&ensp;&ensp;&ensp;&ensp;|
-&ensp;&ensp;&ensp;&ensp;|  REST API (JWT)
-&ensp;&ensp;&ensp;&ensp;v
-[ NestJS Backend ]
-&ensp;&ensp;&ensp;&ensp;|
-&ensp;&ensp;&ensp;&ensp;|
-[ Supabase PostgreSQL + Auth ]
+[ Next.js Frontend ]<br> 
+&ensp;&ensp;&ensp;&ensp;|  
+&ensp;&ensp;&ensp;&ensp;|  REST API (JWT)<br> 
+&ensp;&ensp;&ensp;&ensp;v<br> 
+[ NestJS Backend ]<br> 
+&ensp;&ensp;&ensp;&ensp;|<br> 
+&ensp;&ensp;&ensp;&ensp;|<br> 
+[ Supabase PostgreSQL + Auth ]<br> 
 
 ## 🔐 Security Highlights
 
